@@ -14,12 +14,9 @@ public class LoginController {
     public String home() {
         return pagesServices.Login();
     }
-    @GetMapping("/Log")
-    public String Log() {
-        return pagesServices.Log();
-    }
-    @GetMapping("/Cadastro")
-    public String Cadastro() {
-        return pagesServices.Cadastro();
+
+    @GetMapping("/Home")
+    public String Home() {
+        return pagesServices.Home();
     }
 }
