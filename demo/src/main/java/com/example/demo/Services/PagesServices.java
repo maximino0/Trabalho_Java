@@ -12,7 +12,7 @@ public class PagesServices {
         return "Cadastro";
     }
 
-    public String Log(){
+    public String Home(){
         return "Todo";
     }
 }
