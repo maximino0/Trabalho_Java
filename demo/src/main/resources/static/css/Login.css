@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  transition: .2s linear;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body, html{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to top , Red, Purple);
+}
+
+.container {
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 90vh;
+  max-width: 1300px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to top, Purple, Red);
+}
+
+.mensagem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  width: 80%;
+  display: none;
+}
+
+.formulario {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.conteudo-formulario {
+  width: 80%;
+}
+
+form {
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario-visivel {
+  display: flex;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e6d0bf;
+  border-radius: 5px;
+}
+.button {
+    display: inline-block; /* Para que o link se comporte como um botão */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e48948;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none; /* Remove o sublinhado do link */
+    text-align: center; /* Centraliza o texto */
+    transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+}
+
+.button:hover {
+    background-color: #f46c04; /* Cor ao passar o mouse */
+}
+p {
+  font-size: 14px;
+}
+
+.mudar-formulario {
+  color: #f46c04;
+  cursor: pointer;
+}
+
+h2{
+  font-size: 50px;
+  text-align: center;
+}
+
+
+h1{
+  font-size: 30px;
+  text-align: center;
+}
