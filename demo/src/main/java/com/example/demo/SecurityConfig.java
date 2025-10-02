@@ -20,8 +20,25 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auth) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)auth.requestMatchers(new String[]{"/cadastro", "/", "/usuarios", "/css/**"})).permitAll().anyRequest()).authenticated()).formLogin((form) -> ((FormLoginConfigurer)form.loginPage("/").defaultSuccessUrl("/Home", true)).permitAll()).logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll());
-        return (SecurityFilterChain)http.build();
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/cadastro", "/", "/usuarios", "/css/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/")
+                        .defaultSuccessUrl("/Home", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)   // invalida a sessão no logout
+                        .deleteCookies("JSESSIONID")   // remove o cookie da sessão
+                        .permitAll()
+                );
+
+        return http.build();
     }
 
     @Bean

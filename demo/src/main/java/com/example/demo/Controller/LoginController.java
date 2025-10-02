@@ -19,9 +19,4 @@ public class LoginController {
     public String home() {
         return this.pagesServices.Login();
     }
-
-    @GetMapping({"/Home"})
-    public String Home() {
-        return this.pagesServices.Home();
-    }
 }

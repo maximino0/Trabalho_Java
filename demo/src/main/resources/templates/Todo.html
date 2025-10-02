@@ -3,10 +3,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Suas tarefas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/Home.css">
 </head>
 <body>
-    <h1>Bem vindo ao nosso site de taredas</h1>
+    <div class="container">
+        <div class="formulario">
+            <div class="conteudo-formulario">
+                <!-- Formulário correto -->
+                <form th:action="@{/Home}" th:object="${tarefa}" method="post" class="formulario-visivel">
+                    <h2>Tarefas</h2>
+                    <h1>Qual será a tarefa de Hoje?!</h1>
+                    <input type="text" name="nometarefa" placeholder="Qual será a tarefa" required />
+                    <input type="date" name="data" placeholder="Data limite para fazer a tarefa" required />
+                    <div class="login-button">
+                        <button type="submit">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <form th:action="@{/logout}" method="post">
         <button type="submit">Logout</button>
     </form>
