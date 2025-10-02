@@ -1,25 +1,27 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.example.demo.Controller;
 
 import com.example.demo.Services.PagesServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
     @Autowired
     private PagesServices pagesServices;
 
-    @GetMapping("/")
+    @GetMapping({"/"})
     public String home() {
-        return pagesServices.Login();
+        return this.pagesServices.Login();
     }
-    @GetMapping("/Log")
-    public String Log() {
-        return pagesServices.Log();
-    }
-    @GetMapping("/Cadastro")
-    public String Cadastro() {
-        return pagesServices.Cadastro();
+
+    @GetMapping({"/Home"})
+    public String Home() {
+        return this.pagesServices.Home();
     }
 }

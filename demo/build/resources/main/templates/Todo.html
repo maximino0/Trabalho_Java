@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+    <h1>Bem vindo ao nosso site de taredas</h1>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
 
 </body>
 </html>
