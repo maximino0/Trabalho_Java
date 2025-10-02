@@ -1,0 +1,18 @@
+package com.example.demo.Services;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class PagesServices {
+    public String Login(){
+        return "Login";
+    }
+
+    public String Cadastro(){
+        return "Cadastro";
+    }
+
+    public String Log(){
+        return "Todo";
+    }
+}

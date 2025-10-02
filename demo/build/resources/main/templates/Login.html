@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tela Inicial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="Login.css">
+</head>
+<body>
+    <div class = "container">
+
+
+        <div class ="formulario">
+            <div class="conteudo-formulario">
+                <form id="login" class="formulario-visivel">
+                    <h2>Login</h2>
+                    <h1>Bem-vindo de volta!</h1>
+                    <input type="text" placeholder="Usuário" id="Usuario" required>
+                    <input type="password" placeholder="Senha" id="Senha" required>
+                    <div class="login-button">
+                        <button type="button" onclick="Login()">Entrar</button>
+                    </div>
+                </form>
+                <p>Não tem conta?</p>
+                <button type="button" onclick="Redirect_cadastro()">Criar um cadastro</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
