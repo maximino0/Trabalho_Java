@@ -6,6 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Generated;
+import org.springframework.data.domain.Example;
+
+import java.util.List;
 
 @Entity
 public class Tarefa {
@@ -16,6 +19,9 @@ public class Tarefa {
     private Long id;
     private String name;
     private String date;
+    private String status;
+    private String tag;
+    private boolean situacao;
 
     @Generated
     public Long getId() {
@@ -23,7 +29,27 @@ public class Tarefa {
     }
 
     @Generated
-    public String getname() {
+    public boolean getSituacao() {
+        return this.situacao;
+    }
+
+    @Generated
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
+    }
+
+    @Generated
+    public String getTag() {
+        return this.tag;
+    }
+
+    @Generated
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    @Generated
+    public String getName() {
         return this.name;
     }
 
@@ -31,12 +57,12 @@ public class Tarefa {
     public String getDate() {
         return this.date;
     }
-    
 
     @Generated
-    public void setId(final Long id) {
-        this.id = id;
+    public String getStatus() {
+        return this.status;
     }
+
 
     @Generated
     public void setname(final String name) {
@@ -46,6 +72,11 @@ public class Tarefa {
     @Generated
     public void setDate(final String Date) {
         this.date = Date;
+    }
+
+    @Generated
+    public void setStatus(final String Status) {
+        this.status = Status;
     }
 
 
@@ -70,8 +101,8 @@ public class Tarefa {
                     return false;
                 }
 
-                Object this$name = this.getname();
-                Object other$name = other.getname();
+                Object this$name = this.getName();
+                Object other$name = other.getName();
                 if (this$name == null) {
                     if (other$name != null) {
                         return false;
@@ -106,17 +137,16 @@ public class Tarefa {
         int result = 1;
         Object $id = this.getId();
         result = result * 59 + ($id == null ? 43 : $id.hashCode());
-        Object $name = this.getname();
+        Object $name = this.getName();
         result = result * 59 + ($name == null ? 43 : $name.hashCode());
         Object $Date = this.getDate();
         result = result * 59 + ($Date == null ? 43 : $Date.hashCode());
+        Object $Status = this.getStatus();
+        result = result * 59 + ($Status == null ? 43 : $Status.hashCode());
         return result;
     }
 
-    @Generated
-    public String toString() {
-        Long var10000 = this.getId();
-        return "Tarefa(id=" + var10000 + ", name=" + this.getname() + ", Date=" + this.getDate() +  ")";
-    }
+
+
 }
 

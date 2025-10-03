@@ -5,9 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
 import lombok.Generated;
 
+import java.lang.reflect.Field;
+
 @Entity
+@Data
 public class User {
     @Id
     @GeneratedValue(
@@ -36,11 +40,6 @@ public class User {
     @Generated
     public String getPassword() {
         return this.password;
-    }
-
-    @Generated
-    public void setId(final Long id) {
-        this.id = id;
     }
 
     @Generated
@@ -139,5 +138,6 @@ public class User {
         Long var10000 = this.getId();
         return "User(id=" + var10000 + ", username=" + this.getUsername() + ", email=" + this.getEmail() + ", password=" + this.getPassword() + ")";
     }
+
 }
 
