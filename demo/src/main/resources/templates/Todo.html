@@ -1,36 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Suas tarefas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/Home.css">
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Hotel Website</title>
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <!-- swiper js cdn link -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <!-- custom css link -->
+   <link rel="stylesheet" href="css/Home.css">
 </head>
 <body>
-    <div class="container">
-        <div class="formulario">
-            <div class="conteudo-formulario">
-                <!-- Formulário correto -->
-                <form th:action="@{/Home}" th:object="${tarefa}" method="post" class="formulario-visivel">
-                    <h2>Tarefas</h2>
-                    <h1>Qual será a tarefa de Hoje?!</h1>
-                    <input type="text" name="nometarefa" placeholder="Qual será a tarefa" required />
-                    <input type="date" name="data" placeholder="Data limite para fazer a tarefa" required />
-                    <div class="login-button">
-                        <button type="submit">Enviar</button>
-                    </div>
-                </form>
-                <form th:action="@{/logout}" method="post" class="formulario-visivel">
-                    <button type="submit">Logout</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Logout</button>
-    </form>
+   <!-- header -->
+
+   <header class="header">
+
+      <a href="#" class="logo"> <i class="fas fa-hotel"></i> Tudo para todo </a>
+
+      <nav class="navbar">
+         <a href="#home">home</a>
+         <a href="#review">Atividades</a>
+         <a href="#about">sobre nós</a>
+         <a href="#Atividade" class="btn">Adicionar Atividade</a>
+         <a href="logout.html" class="btn">logout</a> 
+         <!-- arrumar essa lógica -->
+      </nav>
+
+      <div id="menu-btn" class="fas fa-bars"></div>
+
+   </header>
+
+   <!-- end -->
+
+   <!-- home -->
+
+   <section class="home" id="home">
+
+      <div class="swiper home-slider">
+
+         <div class="swiper-wrapper">
+
+            <div class="swiper-slide slide" style="background: url(images/tropical.jpg) no-repeat;">
+               <div class="content">
+                  <h3>Onde as metas se tornam feitos</h3>
+                  <!-- colocar fotos relacionadas ao nosso programa -->
+                  
+               </div>
+            </div>
+
+            <div class="swiper-slide slide" style="background: url(images/tropiucal.jpg) no-repeat;">
+               <div class="content">
+                  <h3>Onde as metas se tornam feitos</h3>
+                  
+               </div>
+            </div>
+
+            <div class="swiper-slide slide" style="background: url(images/beach2.jpg) no-repeat;">
+               <div class="content">
+                  <h3>Onde as metas se tornam feitos</h3>
+                  
+               </div>
+            </div>
+
+            <div class="swiper-slide slide" style="background: url(images/beach1.jpg) no-repeat;">
+               <div class="content">
+                  <h3>Onde as metas se tornam feitos</h3>
+                  
+               </div>
+            </div>
+
+         </div>
+
+         <div class="swiper-button-next"></div>
+         <div class="swiper-button-prev"></div>
+
+      </div>
+
+   </section>
+
+   <!-- Atividadetion -->
+
+   <section class="reservation" id="Atividade">
+
+      <h1 class="heading">Atividades</h1>
+
+      <form id="AtividadeForm">
+          <div class="container">
+              <div class="box">
+                  <p>Conteudo <span>*</span></p>
+                  <input type="text" class="input" id="ConteudoAtividade" placeholder="Seu Conteudo">
+              </div>
+
+              <div class="box">
+                  <p>Resumo <span>*</span></p>
+                  <input type="text" class="input" id="ResumoAtividade" placeholder="Seu Resumo">
+              </div>
+
+
+              <div class="box">
+                  <p>Data de entrega <span>*</span></p>
+                  <input type="date" class="input" id="data">
+              </div>
+
+              <div class="box">
+                  <p>Dificuldade da atividade <span>*</span></p>
+                  <select name="s" class="input" id="DificuldadeAtividade">
+                      <option value="1">1 </option>
+                      <option value="2">2 </option>
+                      <option value="3">3 </option>
+                      <option value="4">4 </option>
+                      <option value="5">5 </option>
+                      <option value="6">6 </option>
+                      <option value="1">7 </option>
+                      <option value="2">8 </option>
+                      <option value="3">9 </option>
+                      <option value="4">10 </option>
+
+                  </select>
+              </div>
+
+              
+              
+          </div>
+
+          <input type="button" value="Atividades" class="btn" onclick="AdicionarAtividade()">
+      </form>
+      <div id="resultadoAtividade"></div>
+  </section>
+
+  
+   <!-- end -->
+
+   <!-- end -->
+
+   <!-- availability -->
+
+   
+
+   <!-- end -->
+
+   <!-- room -->
+
+   
+
+   <!-- end -->
+ <!-- about -->
+
+   <section class="about" id="about">
+
+      <div class="row">
+
+         <div class="image">
+            <img src="images/externo.jpg" alt="">
+         </div>
+
+         <div class="content">
+            <h3>Sobre Nós</h3>
+            <p>Colocar texto aqui.</p>
+         </div>
+
+      </div>
+
+   </section>
+
+   <!-- end -->
+
+   <!-- review -->
+
+   <section class="review" id="review">
+
+      <div class="swiper review-slider">
+         <div class="swiper-wrapper">
+
+            <div class="swiper-slide slide">
+               <h2 class="heading">Calendário</h2>
+               <i class="fas fa-quote-right"></i>
+              <p>Seguir essa lógica para ficar mostrando as atividades que já estão no banco da dados</p>
+               <div class="user">
+                  <i class="fas fa-user"></i>
+                  <div class="user-info">
+                     <h3>Lembrete</h3>
+                     <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            
+
+         </div>
+         <div class="swiper-pagination"></div>
+      </div>
+
+   </section>
+
+   <!-- end -->
+
+   
+   
+
+   <!-- footer -->
+
+   <section class="footer">
+
+      <div class="box-container">
+
+         <div class="box">
+            <h3>contact info</h3>
+            <a href="#"> <i class="fas fa-phone"></i> +123-456-789 </a>
+            <a href="#"> <i class="fas fa-phone"></i> +123-456-789</a>
+            <a href="#"> <i class="fas fa-envelope"></i> tudoparatodo@gmail.com</a>
+            <a href="#"> <i class="fas fa-map"></i> São Paulo, São Paulo</a>
+         </div>
+
+         <div class="box">
+            <h3>quick links</h3>
+            <a href="#"> <i class="fas fa-arrow-right"></i> home</a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> Atividades</a>
+         </div>
+      </div>
+
+      <div class="share">
+         <a href="#" class="fab fa-facebook-f"></a>
+         <a href="#" class="fab fa-instagram"></a>
+         <a href="#" class="fab fa-twitter"></a>
+         <a href="#" class="fab fa-pinterest"></a>
+      </div>
+
+
+   </section>
+
+   <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+   <script src="script.js"></script>
+   <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+ 
+   <script src="script2.js"></script>
+ 
 
 </body>
 </html>
