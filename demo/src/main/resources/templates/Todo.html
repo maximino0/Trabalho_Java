@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br" xmlns:th="https://www.thymeleaf.org">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Hotel Website</title>
    <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-   <!-- swiper js cdn link -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <!-- custom css link -->
-   <link rel="stylesheet" href="css/Home.css">
+    <!-- font awesome -->
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}">
+    <!-- swiper js -->
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css}">
+    <!-- custom css -->
+    <link rel="stylesheet" th:href="@{/css/Home.css}">
 </head>
 <body>
 
@@ -25,7 +26,7 @@
          <a href="#review">Atividades</a>
          <a href="#about">sobre nós</a>
          <a href="#Atividade" class="btn">Adicionar Atividade</a>
-         <a href="logout.html" class="btn">logout</a> 
+         <a th:href="@{/logout}" class="btn">logout</a>
          <!-- arrumar essa lógica -->
       </nav>
 
@@ -43,34 +44,13 @@
 
          <div class="swiper-wrapper">
 
-            <div class="swiper-slide slide" style="background: url(images/tropical.jpg) no-repeat;">
-               <div class="content">
-                  <h3>Onde as metas se tornam feitos</h3>
-                  <!-- colocar fotos relacionadas ao nosso programa -->
-                  
-               </div>
-            </div>
-
-            <div class="swiper-slide slide" style="background: url(images/tropiucal.jpg) no-repeat;">
-               <div class="content">
-                  <h3>Onde as metas se tornam feitos</h3>
-                  
-               </div>
-            </div>
-
-            <div class="swiper-slide slide" style="background: url(images/beach2.jpg) no-repeat;">
-               <div class="content">
-                  <h3>Onde as metas se tornam feitos</h3>
-                  
-               </div>
-            </div>
-
-            <div class="swiper-slide slide" style="background: url(images/beach1.jpg) no-repeat;">
-               <div class="content">
-                  <h3>Onde as metas se tornam feitos</h3>
-                  
-               </div>
-            </div>
+             <div class="swiper-slide slide"
+                  th:each="imagem : ${imagens}"
+                  th:style="'background: url(' + @{/images/{img}(img=${imagem})} + ') no-repeat;'">
+                 <div class="content">
+                     <h3>Onde as metas se tornam feitos</h3>
+                 </div>
+             </div>
 
          </div>
 
@@ -87,46 +67,32 @@
 
       <h1 class="heading">Atividades</h1>
 
-      <form id="AtividadeForm">
+       <form th:action="@{/atividades/adicionar}" method="post" th:object="${tarefa}">
           <div class="container">
               <div class="box">
-                  <p>Conteudo <span>*</span></p>
-                  <input type="text" class="input" id="ConteudoAtividade" placeholder="Seu Conteudo">
+                  <p>Conteúdo</p>
+                  <input type="text" th:field="*{name}" class="input" placeholder="Seu Conteúdo">
               </div>
 
               <div class="box">
-                  <p>Resumo <span>*</span></p>
-                  <input type="text" class="input" id="ResumoAtividade" placeholder="Seu Resumo">
-              </div>
-
-
-              <div class="box">
-                  <p>Data de entrega <span>*</span></p>
-                  <input type="date" class="input" id="data">
+                  <p>Resumo</p>
+                  <input type="text" th:field="*{resume}" class="input" placeholder="Seu Resumo">
               </div>
 
               <div class="box">
-                  <p>Dificuldade da atividade <span>*</span></p>
-                  <select name="s" class="input" id="DificuldadeAtividade">
-                      <option value="1">1 </option>
-                      <option value="2">2 </option>
-                      <option value="3">3 </option>
-                      <option value="4">4 </option>
-                      <option value="5">5 </option>
-                      <option value="6">6 </option>
-                      <option value="1">7 </option>
-                      <option value="2">8 </option>
-                      <option value="3">9 </option>
-                      <option value="4">10 </option>
+                  <p>Data de entrega</p>
+                  <input type="date" th:field="*{date}" class="input">
+              </div>
 
+              <div class="box">
+                  <p>Dificuldade</p>
+                  <select th:field="*{difficult}" class="input">
+                      <option th:each="i : ${#numbers.sequence(1,10)}" th:value="${i}" th:text="${i}"></option>
                   </select>
               </div>
-
-              
-              
           </div>
 
-          <input type="button" value="Atividades" class="btn" onclick="AdicionarAtividade()">
+           <input type="submit" value="Adicionar Atividade" class="btn">
       </form>
       <div id="resultadoAtividade"></div>
   </section>
@@ -154,7 +120,7 @@
       <div class="row">
 
          <div class="image">
-            <img src="images/externo.jpg" alt="">
+            <img th:src="@{/images/externo.jpg}" alt="">
          </div>
 
          <div class="content">
@@ -175,24 +141,16 @@
       <div class="swiper review-slider">
          <div class="swiper-wrapper">
 
-            <div class="swiper-slide slide">
-               <h2 class="heading">Calendário</h2>
-               <i class="fas fa-quote-right"></i>
-              <p>Seguir essa lógica para ficar mostrando as atividades que já estão no banco da dados</p>
-               <div class="user">
-                  <i class="fas fa-user"></i>
-                  <div class="user-info">
-                     <h3>Lembrete</h3>
-                     <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+             <div class="swiper-slide slide" th:each="tarefa : ${tarefas}">
+                 <h2 class="heading" th:text="${tarefa.name}"></h2>
+                 <p th:text="${tarefa.resume}"></p>
+                 <div class="user">
+                     <div class="user-info">
+                         <h3 th:text="'Dificuldade: ' + ${tarefa.difficult}"></h3>
+                         <p th:text="'Data de entrega: ' + ${tarefa.date}"></p>
                      </div>
-                  </div>
-               </div>
-            </div>
+                 </div>
+             </div>
 
             
 
@@ -238,12 +196,10 @@
 
    </section>
 
-   <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+   <script th:src="@{https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js}"></script>
 
-   <script src="script.js"></script>
-   <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
- 
-   <script src="script2.js"></script>
+   <script th:src="@{https://unpkg.com/swiper@8/swiper-bundle.min.js}"></script>
+
  
 
 </body>

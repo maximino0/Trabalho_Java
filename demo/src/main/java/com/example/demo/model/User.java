@@ -7,55 +7,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.lang.reflect.Field;
 
 @Entity
 @Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
+    
     private Long id;
+    
     private String username;
+    
     private String email;
+    
     private String password;
 
-    @Generated
-    public Long getId() {
-        return this.id;
-    }
-
-    @Generated
-    public String getUsername() {
-        return this.username;
-    }
-
-    @Generated
-    public String getEmail() {
-        return this.email;
-    }
-
-    @Generated
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Generated
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
-    @Generated
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-    @Generated
-    public void setPassword(final String password) {
-        this.password = password;
-    }
 
     @Generated
     public boolean equals(final Object o) {
@@ -120,7 +94,7 @@ public class User {
 
     @Generated
     public int hashCode() {
-        int PRIME = 59;
+//        int PRIME = 59; nn entendi pq dessa variavel
         int result = 1;
         Object $id = this.getId();
         result = result * 59 + ($id == null ? 43 : $id.hashCode());
@@ -133,11 +107,6 @@ public class User {
         return result;
     }
 
-    @Generated
-    public String toString() {
-        Long var10000 = this.getId();
-        return "User(id=" + var10000 + ", username=" + this.getUsername() + ", email=" + this.getEmail() + ", password=" + this.getPassword() + ")";
-    }
 
 }
 

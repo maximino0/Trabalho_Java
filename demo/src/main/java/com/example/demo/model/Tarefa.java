@@ -6,78 +6,37 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Example;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Tarefa {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
+    
     private Long id;
+    
     private String name;
-    private String date;
+    
+    private LocalDate date;
+    
     private String status;
+    
     private String tag;
+    
     private boolean situacao;
-
-    @Generated
-    public Long getId() {
-        return this.id;
-    }
-
-    @Generated
-    public boolean getSituacao() {
-        return this.situacao;
-    }
-
-    @Generated
-    public void setSituacao(boolean situacao) {
-        this.situacao = situacao;
-    }
-
-    @Generated
-    public String getTag() {
-        return this.tag;
-    }
-
-    @Generated
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    @Generated
-    public String getDate() {
-        return this.date;
-    }
-
-    @Generated
-    public String getStatus() {
-        return this.status;
-    }
-
-
-    @Generated
-    public void setname(final String name) {
-        this.name = name;
-    }
-
-    @Generated
-    public void setDate(final String Date) {
-        this.date = Date;
-    }
-
-    @Generated
-    public void setStatus(final String Status) {
-        this.status = Status;
-    }
+    
+    private String resume;
+    
+    private int difficult;
 
 
     @Generated

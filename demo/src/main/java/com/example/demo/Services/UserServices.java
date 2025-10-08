@@ -18,6 +18,12 @@ public class UserServices {
     }
 
     public boolean Cadastrar(User user){
+        //criação de lógica para criar um usuário, verificar oq está entrando
         return (this.repository.findByUsername(user.getUsername())==null && this.repository.findByEmail(user.getEmail())==null);
+    }
+
+    public void AdicionarCadastro(User user){
+
+        repository.save(user);
     }
 }

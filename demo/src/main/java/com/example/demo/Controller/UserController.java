@@ -39,8 +39,9 @@ public class UserController {
 
     @PostMapping({"/cadastro"})
     public String cadastroSubmit(@ModelAttribute User user) {
+        //criação de uma lógica para verificar os dados que entram
         if(UserServices.Cadastrar(user)){
-            this.repository.save(user);
+            UserServices.AdicionarCadastro(user);
             return this.pagesServices.Login();
         }
         return this.pagesServices.Cadastro();

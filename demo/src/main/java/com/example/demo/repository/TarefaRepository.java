@@ -5,17 +5,20 @@ import com.example.demo.model.User;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     Tarefa findByName(String name);
 
-    Tarefa findByDate(String date);
+    Tarefa findByTag(String tag);
 
-    default Tarefa findByNameOrDate(String fazer) {
+    Tarefa findByDate(LocalDate date);
+
+    default Tarefa findByNameOrTag(String fazer) {
         Tarefa tarefa = this.findByName(fazer);
         if (tarefa == null) {
-            tarefa = this.findByDate(fazer);
+            tarefa = this.findByTag(fazer);
         }
         return tarefa;
     }
