@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.validation.constraints.*;
 
 import java.lang.reflect.Field;
 
@@ -23,11 +24,14 @@ public class User {
     )
     
     private Long id;
-    
+
+    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ]+$", message = "Use apenas letras e espaços")
     private String username;
-    
+
+
     private String email;
-    
+
+    @Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_/+-=] {8,}$", message = "A senha deve ter no mínimo 8 caracteres e usar apenas letras, números e símbolos permitidos")
     private String password;
 
 
@@ -94,7 +98,6 @@ public class User {
 
     @Generated
     public int hashCode() {
-//        int PRIME = 59; nn entendi pq dessa variavel
         int result = 1;
         Object $id = this.getId();
         result = result * 59 + ($id == null ? 43 : $id.hashCode());

@@ -26,7 +26,13 @@
          <a href="#review">Atividades</a>
          <a href="#about">sobre nós</a>
          <a href="#Atividade" class="btn">Adicionar Atividade</a>
-         <a th:href="@{/logout}" class="btn">logout</a>
+          <form th:action="@{/logout}" method="post" style="display:inline;">
+              <button type="submit" class="btn">Logout</button>
+          </form>
+          <label class="theme-switch">
+              <input type="checkbox" id="toggle-theme">
+              <span class="slider"></span>
+          </label>
          <!-- arrumar essa lógica -->
       </nav>
 

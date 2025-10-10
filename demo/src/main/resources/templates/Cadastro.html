@@ -13,9 +13,9 @@
                 <h2>Cadastro</h2>
                 <h1>Crie sua conta</h1>
 
-                <input type="text" th:field="*{username}" placeholder="Usuário" required>
+                <input type="text" th:field="*{username}" placeholder="Usuário" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ ]+$"  required  oninvalid="this.setCustomValidity('Por favor, insira apenas letras e espaços.')" oninput="this.setCustomValidity('')">
                 <input type="email" th:field="*{email}" placeholder="Email" required>
-                <input type="password" th:field="*{password}" placeholder="Senha" required>
+                <input type="password" th:field="*{password}" placeholder="Senha" pattern="^[A-Za-z0-9!@#$%^&*()_+\-=]{8,}$" required oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">
 
                 <div class="login-button">
                     <button type="submit">Cadastrar</button>

@@ -7,9 +7,11 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +40,9 @@ public class UserController {
     }
 
     @PostMapping({"/cadastro"})
-    public String cadastroSubmit(@ModelAttribute User user) {
+    public String cadastroSubmit(@ModelAttribute @Valid User user, BindingResult result) {
         //criação de uma lógica para verificar os dados que entram
-        if(UserServices.Cadastrar(user)){
+        if(UserServices.Cadastrar(user) && !result.hasErrors()){
             UserServices.AdicionarCadastro(user);
             return this.pagesServices.Login();
         }

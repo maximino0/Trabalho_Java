@@ -15,10 +15,10 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     Tarefa findByDate(LocalDate date);
 
-    default Tarefa findByNameOrTag(String fazer) {
-        Tarefa tarefa = this.findByName(fazer);
+    default Tarefa findByNameOrTag(Tarefa entrada) {
+        Tarefa tarefa = this.findByName(entrada.getName());
         if (tarefa == null) {
-            tarefa = this.findByTag(fazer);
+            tarefa = this.findByTag(entrada.getTag());
         }
         return tarefa;
     }
