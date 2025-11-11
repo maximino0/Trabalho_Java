@@ -15,8 +15,6 @@ import java.lang.reflect.Field;
 
 @Entity
 @Data
-@Getter
-@Setter
 public class User {
     @Id
     @GeneratedValue(
@@ -25,14 +23,50 @@ public class User {
     
     private Long id;
 
-    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ]+$", message = "Use apenas letras e espaços")
+//    @Pattern(
+//            regexp = "^(?:[A-Za-zÀ-ÖØ-öø-ÿ ]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})$",
+//            message = "Use um nome completo (somente letras e espaços) ou um e-mail válido"
+//    )
     private String username;
 
 
     private String email;
 
-    @Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_/+-=] {8,}$", message = "A senha deve ter no mínimo 8 caracteres e usar apenas letras, números e símbolos permitidos")
+    //@Pattern(regexp = "^[A-Za-z0-9!@#$%^&*()_/+-=]{8,}$", message = "A senha deve ter no mínimo 8 caracteres e usar apenas letras, números e símbolos permitidos")
     private String password;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    // Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 
     @Generated

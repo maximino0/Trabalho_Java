@@ -28,7 +28,7 @@ public class Tarefa {
     
     private LocalDate date;
     
-    private String status;
+    private boolean status;
     
     private String tag;
     
@@ -38,7 +38,70 @@ public class Tarefa {
     
     private int difficult;
 
+    public Long getId() {
+        return id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public boolean getSituacao() {
+        return situacao;
+    }
+
+    public String getResume() {
+        return resume;
+    }
+
+    public int getDifficult() {
+        return difficult;
+    }
+
+    // Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public void setSituacao(boolean situacao) {
+        this.situacao = situacao;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
+
+    public void setDifficult(int difficult) {
+        this.difficult = difficult;
+    }
     @Generated
     public boolean equals(final Object o) {
         if (o == this) {
@@ -104,8 +167,18 @@ public class Tarefa {
         result = result * 59 + ($Status == null ? 43 : $Status.hashCode());
         return result;
     }
-
-
-
+    @Override
+    public String toString() {
+        return "Tarefa{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", date=" + date +
+                ", status='" + status + '\'' +
+                ", tag='" + tag + '\'' +
+                ", situacao=" + situacao +
+                ", resume='" + resume + '\'' +
+                ", difficult=" + difficult +
+                '}';
+    }
 }
 

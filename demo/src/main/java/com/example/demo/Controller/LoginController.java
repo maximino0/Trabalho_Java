@@ -15,7 +15,7 @@ public class LoginController {
     @Autowired
     private PagesServices pagesServices;
 
-    @GetMapping({"/","/logout"})
+    @GetMapping({"/","/logout","/login"})
     public String home() {
         return this.pagesServices.Login();
     }

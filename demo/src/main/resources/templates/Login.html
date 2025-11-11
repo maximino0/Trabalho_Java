@@ -14,8 +14,8 @@
             <form th:action="@{/}" method="post" class="formulario-visivel">
                 <h2>Login</h2>
                 <h1>Bem-vindo!</h1>
-                <input type="text"  placeholder="Usuário" pattern="^[A-Za-z0-9!@.]+$"  required  oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">
-                <input type="password"  placeholder="Senha" pattern="^[A-Za-z0-9!@#$%^&*()_+\-=]{8,}$" required oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">
+                <input type="text"  name="username" placeholder="Usuário" required  oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">
+                <input type="password"  name="password" placeholder="Senha" required oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">
                 <div class="login-button">
                     <button type="submit">Entrar</button>
                 </div>

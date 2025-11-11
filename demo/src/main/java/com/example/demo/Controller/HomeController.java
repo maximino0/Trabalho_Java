@@ -4,6 +4,7 @@ import com.example.demo.Services.PagesServices;
 import com.example.demo.Services.TarefasServices;
 import com.example.demo.model.Tarefa;
 import com.example.demo.model.User;
+import com.example.demo.repository.TarefaRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +18,13 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    private UserRepository repository;
+    private UserRepository repository_u;
     @Autowired
     private PagesServices pagesServices;
     @Autowired
     private TarefasServices tarefasServices;
+    @Autowired
+    private TarefaRepository repository_t;
 
     @GetMapping({"/home"})
     public String homeForm(Model model) {
@@ -32,9 +35,14 @@ public class HomeController {
     }
 
     @PostMapping({"/atividades/adicionar"})
-    public void Adicionar_Atividade(@ModelAttribute Tarefa tarefa){
+    public String Adicionar_Atividade(@ModelAttribute Tarefa tarefa){
+
         System.out.println(tarefa);
+
         tarefasServices.adicionar(tarefa);
+        Tarefa teste = repository_t.findByNameOrTag(tarefa);
+        System.out.println(teste);
         //adicionar lógica para verificação dos dados que entraram como tarefa
+        return this.pagesServices.Home();
     }
 }
