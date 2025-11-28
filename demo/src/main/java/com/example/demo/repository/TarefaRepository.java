@@ -1,7 +1,6 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Tarefa;
-import com.example.demo.model.User;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -22,6 +21,8 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
         }
         return tarefa;
     }
+
+    List<Tarefa> findByidUser(Long IdUser);
 
     @Override
     default <S extends Tarefa> List<S> findAll(Example<S> example) {

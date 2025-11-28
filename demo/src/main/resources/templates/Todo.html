@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="https://www.thymeleaf.org">
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Hotel Website</title>
-   <!-- font awesome cdn link  -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Website</title>
+
     <!-- font awesome -->
     <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}">
     <!-- swiper js -->
@@ -15,198 +15,265 @@
 </head>
 <body>
 
-   <!-- header -->
+<!-- header -->
+<header class="header">
+    <a href="#" class="logo"> <i class="fas fa-hotel"></i> Tudo para todo </a>
 
-   <header class="header">
+    <nav class="navbar">
+        <a href="#home">tarefas</a>
+        <a href="#about">Pendências</a>
+        <a href="#concluida">Concluídas</a>
+        <a href="#tarefa" class="btn">Adicionar tarefa</a>
 
-      <a href="#" class="logo"> <i class="fas fa-hotel"></i> Tudo para todo </a>
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <button type="submit" class="btn">Logout</button>
+        </form>
 
-      <nav class="navbar">
-         <a href="#home">home</a>
-         <a href="#review">Atividades</a>
-         <a href="#about">sobre nós</a>
-         <a href="#Atividade" class="btn">Adicionar Atividade</a>
-          <form th:action="@{/logout}" method="post" style="display:inline;">
-              <button type="submit" class="btn">Logout</button>
-          </form>
-          <label class="theme-switch">
-              <input type="checkbox" id="toggle-theme">
-              <span class="slider"></span>
-          </label>
-         <!-- arrumar essa lógica -->
-      </nav>
+        <label class="theme-switch">
+            <input type="checkbox" id="toggle-theme">
+            <span class="slider"></span>
+        </label>
+    </nav>
 
-      <div id="menu-btn" class="fas fa-bars"></div>
+    <div id="menu-btn" class="fas fa-bars"></div>
+</header>
+<!-- end header -->
 
-   </header>
+<!-- home -->
+<section class="home" id="home">
+    <div class="swiper home-slider">
+        <div class="swiper-wrapper">
 
-   <!-- end -->
+            <div class="swiper-slide slide"
+                 th:each="imagem : ${imagens}"
+                 th:style="'background: url(' + @{/images/{img}(img=${imagem})} + ') no-repeat;'">
+                <div class="content">
+                    <h3>Onde as metas se tornam feitos</h3>
+                </div>
+            </div>
 
-   <!-- home -->
+        </div>
 
-   <section class="home" id="home">
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>
 
-      <div class="swiper home-slider">
+<!-- tarefa -->
+<section class="reservation" id="tarefa">
+    <h1 class="heading">tarefas</h1>
 
-         <div class="swiper-wrapper">
+    <form th:action="@{/tarefas/adicionar}" method="post" th:object="${tarefa}">
+        <div class="container">
+            <div class="box">
+                <p>Conteúdo</p>
+                <input type="text" th:field="*{name}" class="input" placeholder="Seu Conteúdo"
+                       required minlength="3"
+                       oninvalid="this.setCustomValidity('Digite pelo menos 3 caracteres para o conteúdo.')"
+                       oninput="this.setCustomValidity('')">
+            </div>
 
-             <div class="swiper-slide slide"
-                  th:each="imagem : ${imagens}"
-                  th:style="'background: url(' + @{/images/{img}(img=${imagem})} + ') no-repeat;'">
-                 <div class="content">
-                     <h3>Onde as metas se tornam feitos</h3>
-                 </div>
-             </div>
+            <div class="box">
+                <p>Resumo</p>
+                <input type="text" th:field="*{resume}" class="input" placeholder="Seu Resumo"
+                       required minlength="3"
+                       oninvalid="this.setCustomValidity('Digite pelo menos 3 caracteres para o resumo.')"
+                       oninput="this.setCustomValidity('')">
+            </div>
 
-         </div>
+            <div class="box">
+                <p>Data de entrega</p>
+                <input type="date" th:field="*{date}" class="input"
+                       required min=""
+                       oninvalid="this.setCustomValidity('Escolha uma data igual ou posterior a hoje.')"
+                       oninput="this.setCustomValidity('')">
+            </div>
 
-         <div class="swiper-button-next"></div>
-         <div class="swiper-button-prev"></div>
+            <div class="box">
+                <p>Dificuldade</p>
+                <select th:field="*{difficult}" class="input"
+                        required
+                        oninvalid="this.setCustomValidity('Selecione uma dificuldade de 1 a 10.')"
+                        oninput="this.setCustomValidity('')">
+                    <option value="">Escolha</option>
+                    <option th:each="i : ${#numbers.sequence(1,10)}"
+                            th:value="${i}" th:text="${i}"></option>
+                </select>
+            </div>
+        </div>
 
-      </div>
+        <input type="submit" value="Adicionar tarefa" class="btn">
+    </form>
+    <div id="resultadotarefa"></div>
+</section>
 
-   </section>
+<!-- about -->
+<section class="about" id="about">
+    <div class="row">
 
-   <!-- Atividadetion -->
+        <div class="content">
+            <h3>tarefas para fazer</h3>
+            <p>Aqui terá a lista de tarefas que você precisa fazer.</p>
+        </div>
 
-   <section class="reservation" id="Atividade">
+    </div>
+</section>
 
-      <h1 class="heading">Atividades</h1>
+<!-- review -->
+<section class="review" id="review">
 
-       <form th:action="@{/atividades/adicionar}" method="post" th:object="${tarefa}">
-          <div class="container">
-              <div class="box">
-                  <p>Conteúdo</p>
-                  <input type="text" th:field="*{name}" class="input" placeholder="Seu Conteúdo">
-              </div>
+    <div class="swiper review-slider">
 
-              <div class="box">
-                  <p>Resumo</p>
-                  <input type="text" th:field="*{resume}" class="input" placeholder="Seu Resumo">
-              </div>
+        <div class="swiper-wrapper">
 
-              <div class="box">
-                  <p>Data de entrega</p>
-                  <input type="date" th:field="*{date}" class="input">
-              </div>
+            <div class="swiper-slide slide"
+                 th:each="tarefa : ${tarefas}"
+                 th:if="${tarefa.situacao == true}">
+                <h2 class="heading" th:text="${tarefa.name}"></h2>
+                <p th:text="${tarefa.resume}"></p>
 
-              <div class="box">
-                  <p>Dificuldade</p>
-                  <select th:field="*{difficult}" class="input">
-                      <option th:each="i : ${#numbers.sequence(1,10)}" th:value="${i}" th:text="${i}"></option>
-                  </select>
-              </div>
-          </div>
+                <div class="user">
+                    <div class="user-info">
+                        <h3 th:text="'Dificuldade: ' + ${tarefa.difficult}"></h3>
+                        <p th:text="'Data de entrega: ' + ${tarefa.date}"></p>
+                    </div>
+                </div>
 
-           <input type="submit" value="Adicionar Atividade" class="btn">
-      </form>
-      <div id="resultadoAtividade"></div>
-  </section>
+                <div class="actions">
+                    <form th:action="@{/tarefas/finalizar}" method="post">
+                        <input type="hidden" name="id" th:value="${tarefa.id}">
+                        <button type="submit" class="btn">Finalizar tarefa</button>
+                    </form>
+                </div>
+            </div>
 
-  
-   <!-- end -->
+        </div>
 
-   <!-- end -->
+        <div class="swiper-pagination"></div>
+    </div>
 
-   <!-- availability -->
+</section>
 
-   
+<!-- review pendentes -->
+<section class="about" id="concluida">
+    <div class="row">
 
-   <!-- end -->
+        <div class="content">
+            <h3>tarefas Concluídas</h3>
+            <p>Aqui terá a lista de tarefas que você já terminou.</p>
+        </div>
 
-   <!-- room -->
+    </div>
+</section>
+<section class="review" id="concluidas">
+    <div class="swiper review-slider">
 
-   
+        <div class="swiper-wrapper">
 
-   <!-- end -->
- <!-- about -->
+            <div class="swiper-slide slide"
+                 th:each="tarefa : ${tarefas}"
+                 th:if="${tarefa.situacao == false}">
 
-   <section class="about" id="about">
+                <h2 class="heading" th:text="${tarefa.name}"></h2>
+                <p th:text="${tarefa.resume}"></p>
 
-      <div class="row">
+                <div class="user">
+                    <div class="user-info">
+                        <h3 th:text="'Dificuldade: ' + ${tarefa.difficult}"></h3>
+                        <p th:text="'Data de entrega: ' + ${tarefa.date}"></p>
+                    </div>
+                </div>
+            </div>
 
-         <div class="image">
-            <img th:src="@{/images/externo.jpg}" alt="">
-         </div>
+        </div>
 
-         <div class="content">
-            <h3>Sobre Nós</h3>
-            <p>Colocar texto aqui.</p>
-         </div>
+        <div class="swiper-pagination"></div>
+    </div>
 
-      </div>
+</section>
 
-   </section>
 
-   <!-- end -->
+<!-- footer -->
+<section class="footer">
 
-   <!-- review -->
+    <div class="box-container">
 
-   <section class="review" id="review">
-
-      <div class="swiper review-slider">
-         <div class="swiper-wrapper">
-
-             <div class="swiper-slide slide" th:each="tarefa : ${tarefas}">
-                 <h2 class="heading" th:text="${tarefa.name}"></h2>
-                 <p th:text="${tarefa.resume}"></p>
-                 <div class="user">
-                     <div class="user-info">
-                         <h3 th:text="'Dificuldade: ' + ${tarefa.difficult}"></h3>
-                         <p th:text="'Data de entrega: ' + ${tarefa.date}"></p>
-                     </div>
-                 </div>
-             </div>
-
-            
-
-         </div>
-         <div class="swiper-pagination"></div>
-      </div>
-
-   </section>
-
-   <!-- end -->
-
-   
-   
-
-   <!-- footer -->
-
-   <section class="footer">
-
-      <div class="box-container">
-
-         <div class="box">
+        <div class="box">
             <h3>contact info</h3>
             <a href="#"> <i class="fas fa-phone"></i> +123-456-789 </a>
             <a href="#"> <i class="fas fa-phone"></i> +123-456-789</a>
             <a href="#"> <i class="fas fa-envelope"></i> tudoparatodo@gmail.com</a>
             <a href="#"> <i class="fas fa-map"></i> São Paulo, São Paulo</a>
-         </div>
+        </div>
 
-         <div class="box">
+        <div class="box">
             <h3>quick links</h3>
             <a href="#"> <i class="fas fa-arrow-right"></i> home</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Atividades</a>
-         </div>
-      </div>
+            <a href="#"> <i class="fas fa-arrow-right"></i> tarefas</a>
+        </div>
+    </div>
 
-      <div class="share">
-         <a href="#" class="fab fa-facebook-f"></a>
-         <a href="#" class="fab fa-instagram"></a>
-         <a href="#" class="fab fa-twitter"></a>
-         <a href="#" class="fab fa-pinterest"></a>
-      </div>
+    <div class="share">
+        <a href="#" class="fab fa-facebook-f"></a>
+        <a href="#" class="fab fa-instagram"></a>
+        <a href="#" class="fab fa-twitter"></a>
+        <a href="#" class="fab fa-pinterest"></a>
+    </div>
 
+</section>
 
-   </section>
+<!-- scripts -->
+<script th:src="@{https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js}"></script>
 
-   <script th:src="@{https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js}"></script>
+<script>
+    // BLOQUEAR DATAS PASSADAS
+    const hoje = new Date().toISOString().split("T")[0];
+    document.querySelector('input[type="date"]').setAttribute('min', hoje);
 
-   <script th:src="@{https://unpkg.com/swiper@8/swiper-bundle.min.js}"></script>
+    // Swiper das tarefas
+    const reviewSwiper = new Swiper('.review-slider', {
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        },
+        autoplay: {
+            delay: 3000,
+        }
+    });
 
- 
+    // Swiper do banner
+    const homeSwiper = new Swiper('.home-slider', {
+        loop: true,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 4000,
+        }
+    });
+
+    const toggle = document.getElementById("toggle-theme");
+
+    // Carrega tema salvo
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.body.classList.add(savedTheme);
+    toggle.checked = savedTheme === "dark";
+
+    // Quando o usuário troca o tema
+    toggle.addEventListener("change", () => {
+        if (toggle.checked) {
+            document.body.classList.remove("light");
+            document.body.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+        } else {
+            document.body.classList.remove("dark");
+            document.body.classList.add("light");
+            localStorage.setItem("theme", "light");
+        }
+    });
+</script>
 
 </body>
 </html>

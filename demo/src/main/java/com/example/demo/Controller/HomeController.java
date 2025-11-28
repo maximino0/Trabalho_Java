@@ -12,7 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -27,22 +32,31 @@ public class HomeController {
     private TarefaRepository repository_t;
 
     @GetMapping({"/home"})
-    public String homeForm(Model model) {
+    public String homeForm(Model model,  @AuthenticationPrincipal UserDetails userDetails) {
+        User user = repository_u.findByUsernameOrEmail(userDetails.getUsername());
         model.addAttribute("tarefa", new Tarefa());
-//        model.addAttribute("imagens", List.of("")); criar lógica para essas imagens
-        model.addAttribute("tarefas", tarefasServices.listarTodas());
+
+        List<Tarefa> tarefas = repository_t.findByidUser(user.getId());
+        LocalDate hoje = LocalDate.now();
+
+        tarefas.sort(Comparator.comparing(t -> {
+            LocalDate data = t.getDate();
+            return data.isBefore(hoje) ? hoje.plusYears(100) : data; // atrasadas vão pro final
+        }));
+        model.addAttribute("tarefas",tarefas);
         return this.pagesServices.Home();
     }
 
-    @PostMapping({"/atividades/adicionar"})
-    public String Adicionar_Atividade(@ModelAttribute Tarefa tarefa){
+    @PostMapping({"/tarefas/adicionar"})
+    public String Adicionar_Atividade(@ModelAttribute Tarefa tarefa, @AuthenticationPrincipal UserDetails userDetails){
+        User user = repository_u.findByUsernameOrEmail(userDetails.getUsername());
+        tarefasServices.adicionar(tarefa, user);
+        return "redirect:/home";
+    }
 
-        System.out.println(tarefa);
-
-        tarefasServices.adicionar(tarefa);
-        Tarefa teste = repository_t.findByNameOrTag(tarefa);
-        System.out.println(teste);
-        //adicionar lógica para verificação dos dados que entraram como tarefa
-        return this.pagesServices.Home();
+    @PostMapping("/tarefas/finalizar")
+    public String finalizarTarefa(@RequestParam Long id) {
+        tarefasServices.finalizar(id);
+        return "redirect:/home";
     }
 }

@@ -36,7 +36,9 @@ public class Tarefa {
     
     private String resume;
     
-    private int difficult;
+    private Integer difficult;
+
+    private Long idUser;
 
     public Long getId() {
         return id;
@@ -66,9 +68,13 @@ public class Tarefa {
         return resume;
     }
 
-    public int getDifficult() {
+    public Integer getDifficult() {
         return difficult;
     }
+
+    public Long getIdUser() {return idUser;}
+
+
 
     // Setters
     public void setId(Long id) {
@@ -99,9 +105,14 @@ public class Tarefa {
         this.resume = resume;
     }
 
-    public void setDifficult(int difficult) {
+    public void setDifficult(Integer difficult) {
         this.difficult = difficult;
     }
+
+    public void setIdUser(User user) {
+        this.idUser = user.getId();
+    }
+
     @Generated
     public boolean equals(final Object o) {
         if (o == this) {

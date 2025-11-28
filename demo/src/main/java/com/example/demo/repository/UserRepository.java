@@ -14,13 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
     default User findByUsernameOrEmail(String login) {
-        System.out.println(login+"pu");
         User user = this.findByUsername(login);
-        System.out.println(user+"po");
         if (user == null) {
             user = this.findByEmail(login);
         }
-        System.out.println(user+"pe");
 
         return user;
     }
