@@ -62,13 +62,10 @@ public class HomeController {
         model.addAttribute("tarefa", new Tarefa());
         model.addAttribute("listaTagsProntas", lista_tags);
         List<Tarefa> tarefas = repository_t.findByidUser(user.getId());
-        tarefas.getFirst().setDate(LocalDate.of(2025, 11, 27));
-        tarefas.getFirst().setSituacao(true);
         System.out.println("pedrinho"+tarefas.getFirst());
         for(Tarefa tarefinha : tarefas){
             tarefasServices.Atraso(tarefinha);
         }
-        System.out.println("juninho"+tarefas.getFirst());
         LocalDate hoje = LocalDate.now();
         if (Objects.equals(filtro, "data")){
             switch(ordem){
@@ -141,3 +138,4 @@ public class HomeController {
     }
 
 }
+
