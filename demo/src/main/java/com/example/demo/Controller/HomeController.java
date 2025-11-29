@@ -16,9 +16,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.swing.*;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -31,18 +31,82 @@ public class HomeController {
     @Autowired
     private TarefaRepository repository_t;
 
+    String filtro = "data";
+    String ordem = "mês";
+    List<String> lista_tags = new ArrayList<>(Arrays.asList(
+            "Urgente",
+            "Importante",
+            "Prioritária",
+            "Opcional",
+            "Rápida",
+            "Demorada",
+            "Fácil",
+            "Média",
+            "Difícil",
+            "Imediata",
+            "Rotina",
+            "Especial",
+            "Pessoal",
+            "Estudo",
+            "Trabalho",
+            "Provas",
+            "Entrega",
+            "Revisão",
+            "Pesquisa",
+            "Criativa"
+    ));
+
     @GetMapping({"/home"})
     public String homeForm(Model model,  @AuthenticationPrincipal UserDetails userDetails) {
         User user = repository_u.findByUsernameOrEmail(userDetails.getUsername());
         model.addAttribute("tarefa", new Tarefa());
-
+        model.addAttribute("listaTagsProntas", lista_tags);
         List<Tarefa> tarefas = repository_t.findByidUser(user.getId());
+        tarefas.getFirst().setDate(LocalDate.of(2025, 11, 27));
+        tarefas.getFirst().setSituacao(true);
+        System.out.println("pedrinho"+tarefas.getFirst());
+        for(Tarefa tarefinha : tarefas){
+            tarefasServices.Atraso(tarefinha);
+        }
+        System.out.println("juninho"+tarefas.getFirst());
         LocalDate hoje = LocalDate.now();
+        if (Objects.equals(filtro, "data")){
+            switch(ordem){
+                case "dia":
+                    tarefas.removeIf(t -> !t.getDate().isEqual(hoje));
+                    break;
 
-        tarefas.sort(Comparator.comparing(t -> {
-            LocalDate data = t.getDate();
-            return data.isBefore(hoje) ? hoje.plusYears(100) : data; // atrasadas vão pro final
-        }));
+                case "semana":
+                    tarefas.removeIf(t -> {
+                        long diff = java.time.temporal.ChronoUnit.DAYS.between(t.getDate(), hoje);
+                        diff = diff*-1;
+                        return diff > 7 || diff < 0;
+                    });
+                    break;
+
+                case "mes":
+                    tarefas.removeIf(t -> {
+                        long diff = java.time.temporal.ChronoUnit.DAYS.between(t.getDate(), hoje);
+                        diff = diff*-1;
+                        return diff < 0 || diff > 30;
+                    });
+                    break;
+
+                default:
+                    break;
+            }
+
+        } else if(Objects.equals(filtro, "tag")){
+            tarefas.removeIf(t -> !t.getTags().contains(ordem));
+            for(Tarefa tarefa : tarefas){
+                tarefa.setTag(ordem);
+            }
+        } else {
+            if(!Objects.equals(ordem, "todas")){
+                tarefas.removeIf(t -> !Objects.equals(t.getStatus(), ordem));
+            }
+        }
+        tarefas.sort(Comparator.comparing(t -> t.getDate()));
         model.addAttribute("tarefas",tarefas);
         return this.pagesServices.Home();
     }
@@ -56,7 +120,24 @@ public class HomeController {
 
     @PostMapping("/tarefas/finalizar")
     public String finalizarTarefa(@RequestParam Long id) {
-        tarefasServices.finalizar(id);
+        tarefasServices.atualizar(id);
         return "redirect:/home";
     }
+
+    @PostMapping("/tarefas/filtro")
+    public String filtrarTarefa(@RequestParam String filtragem, String valor) {
+        filtro = filtragem;
+        ordem = valor;
+        System.out.println("Pedrinho" + filtro +" "+ ordem);
+        return "redirect:/home";
+    }
+
+    @PostMapping("/tags/adicionar")
+    public String filtrarTarefa(@RequestParam String nomeTag) {
+        if(!lista_tags.contains(nomeTag.trim())){
+            lista_tags.add(nomeTag.trim());
+        }
+        return "redirect:/home";
+    }
+
 }

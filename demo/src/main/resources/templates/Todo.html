@@ -40,6 +40,7 @@
 <!-- end header -->
 
 <!-- home -->
+
 <section class="home" id="home">
     <div class="swiper home-slider">
         <div class="swiper-wrapper">
@@ -100,14 +101,39 @@
                             th:value="${i}" th:text="${i}"></option>
                 </select>
             </div>
+            <div class="box">
+                <p>Tags</p>
+
+                <!-- TAGS PRONTAS -->
+                <div class="tags-container">
+                    <div class="tags-grid">
+                        <label th:each="tag : ${listaTagsProntas}">
+                            <input type="checkbox" th:value="${tag}" name="tags" th:id="${tag}">
+                            <span th:text="${tag}"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ADICIONAR NOVA TAG -->
+
+
+                <!-- LISTA VISUAL DE TAGS ADICIONADAS -->
+                <div id="tagsSelecionadas"></div>
+            </div>
         </div>
 
         <input type="submit" value="Adicionar tarefa" class="btn">
     </form>
+    <form th:action="@{/tags/adicionar}" method="post" class="add-tag-box">
+        <input type="text" name="nomeTag" id="nomeTag" placeholder="Adicionar nova tag" required>
+        <button type="submit">+</button>
+    </form>
     <div id="resultadotarefa"></div>
+
 </section>
 
 <!-- about -->
+
 <section class="about" id="about">
     <div class="row">
 
@@ -118,9 +144,93 @@
 
     </div>
 </section>
+<section class="filters">
+    <p class="heading">Filtrar tarefas</p>
 
+    <form th:action="@{/tarefas/filtro}" method="post" class="filter-form">
+
+        <!-- Tipo de filtragem -->
+        <div class="box">
+            <p>Filtrar por:</p>
+            <select name="filtragem" class="input" required>
+                <option value="data">Data</option>
+                <option value="tag">Tag</option>
+                <option value="status">Status</option>
+            </select>
+        </div>
+
+        <!-- Valor do filtro (dinâmico via JS) -->
+        <div class="box" id="valor-filtro-box">
+            <p>Valor</p>
+
+            <!-- DATA (padrão) -->
+            <select name="valor" id="valor-data" class="input">
+                <option value="dia">Hoje</option>
+                <option value="semana">Esta semana</option>
+                <option value="mes">Este mês</option>
+            </select>
+
+            <!-- TAG (hidden por padrão) -->
+            <input type="text" name="valor" id="valor-tag" class="input" placeholder="Digite a tag" style="display:none;">
+
+            <!-- STATUS (hidden por padrão) -->
+            <select name="valor" id="valor-status" class="input" style="display:none;">
+                <option value="Pendente">Pendente</option>
+                <option value="Em Andamento">Em andamento</option>
+                <option value="Finalizado">Concluída</option>
+                <option value="todas">Todas</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn">Aplicar filtro</button>
+    </form>
+</section>
+
+<script>
+    const filtroSelect = document.querySelector('select[name="filtragem"]');
+    const valorData = document.getElementById('valor-data');
+    const valorTag = document.getElementById('valor-tag');
+    const valorStatus = document.getElementById('valor-status');
+
+    function limparNames() {
+        valorData.name = "";
+        valorTag.name = "";
+        valorStatus.name = "";
+    }
+
+    function atualizarFiltro() {
+        valorData.style.display = "none";
+        valorTag.style.display = "none";
+        valorStatus.style.display = "none";
+
+        limparNames();
+
+        switch (filtroSelect.value) {
+            case "data":
+                valorData.style.display = "block";
+                valorData.name = "valor";
+                break;
+
+            case "tag":
+                valorTag.style.display = "block";
+                valorTag.name = "valor";
+                break;
+
+            case "status":
+                valorStatus.style.display = "block";
+                valorStatus.name = "valor";
+                break;
+        }
+    }
+
+    filtroSelect.addEventListener("change", atualizarFiltro);
+
+    // Garantir que ao carregar a página só o correto esteja ativo
+    atualizarFiltro();
+</script>
 <!-- review -->
 <section class="review" id="review">
+
 
     <div class="swiper review-slider">
 
@@ -136,13 +246,16 @@
                     <div class="user-info">
                         <h3 th:text="'Dificuldade: ' + ${tarefa.difficult}"></h3>
                         <p th:text="'Data de entrega: ' + ${tarefa.date}"></p>
+                        <p th:text="'Status: ' + ${tarefa.status}"></p>
+                        <p th:if="${tarefa.tags != null and !tarefa.tags.isEmpty()}"
+                           th:text="'Tag: ' + ${tarefa.tags[tarefa.tags.size() - 1]}"></p>
                     </div>
                 </div>
 
                 <div class="actions">
                     <form th:action="@{/tarefas/finalizar}" method="post">
                         <input type="hidden" name="id" th:value="${tarefa.id}">
-                        <button type="submit" class="btn">Finalizar tarefa</button>
+                        <button type="submit" class="btn">Atualizar situação da tarefa</button>
                     </form>
                 </div>
             </div>
@@ -181,6 +294,11 @@
                     <div class="user-info">
                         <h3 th:text="'Dificuldade: ' + ${tarefa.difficult}"></h3>
                         <p th:text="'Data de entrega: ' + ${tarefa.date}"></p>
+                        <p th:text="'Status: ' + ${tarefa.status}"
+                           th:classappend="${tarefa.status == 'Vencido'} ? ' status-vencido' : ''">
+                        </p>
+                        <p th:if="${tarefa.tags != null and !tarefa.tags.isEmpty()}"
+                           th:text="'Tag: ' + ${tarefa.tags[tarefa.tags.size() - 1]}"></p>
                     </div>
                 </div>
             </div>
@@ -189,7 +307,6 @@
 
         <div class="swiper-pagination"></div>
     </div>
-
 </section>
 
 
@@ -227,8 +344,16 @@
 
 <script>
     // BLOQUEAR DATAS PASSADAS
-    const hoje = new Date().toISOString().split("T")[0];
-    document.querySelector('input[type="date"]').setAttribute('min', hoje);
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+
+    const dataMin = `${ano}-${mes}-${dia}`;
+
+    document.querySelector('input[type="date"]').setAttribute('min', dataMin);
 
     // Swiper das tarefas
     const reviewSwiper = new Swiper('.review-slider', {

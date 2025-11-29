@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TarefasServices {
@@ -23,13 +24,28 @@ public class TarefasServices {
         //verificação para criação de uma tarefa
         tarefa.setIdUser(user);
         tarefa.setSituacao(true);
+        tarefa.setStatus("Pendente");
         repository.save(tarefa);
     }
-
-    public void finalizar(Long id) {
-        Tarefa t = repository.findById(id).orElseThrow();
-        t.setSituacao(false); // ou status = true
+    public void Atraso(Tarefa tarefa) {
+        Tarefa t = repository.findById(tarefa.getId()).orElseThrow();
+        LocalDate hoje = LocalDate.now();
+        if (hoje.isAfter(t.getDate())&& tarefa.getSituacao()==true){
+            t.setSituacao(false);
+            t.setStatus("Vencido");
+        }
         repository.save(t);
     }
+    public void atualizar(Long id) {
+        Tarefa t = repository.findById(id).orElseThrow();
+        if (Objects.equals(t.getStatus(), "Pendente")){
+            t.setStatus("Em Andamento");
+        }else{
+            t.setStatus("Finalizado");
+            t.setSituacao(false);
+        }
+        repository.save(t);
+    }
+
 
 }

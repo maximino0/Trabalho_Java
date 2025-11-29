@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.data.domain.Example;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,9 +29,9 @@ public class Tarefa {
     
     private LocalDate date;
     
-    private boolean status;
-    
-    private String tag;
+    private String status;
+
+    private List<String> tags;
     
     private boolean situacao;
     
@@ -52,12 +53,15 @@ public class Tarefa {
         return date;
     }
 
-    public boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public String getTag() {
-        return tag;
+    public List<String> getTags() {
+        if (tags != null) {
+            return tags;
+        }
+        return new ArrayList<>();
     }
 
     public boolean getSituacao() {
@@ -89,13 +93,11 @@ public class Tarefa {
         this.date = date;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
+    public void setTag(String tag) {this.tags.add(tag);}
 
     public void setSituacao(boolean situacao) {
         this.situacao = situacao;
@@ -178,6 +180,7 @@ public class Tarefa {
         result = result * 59 + ($Status == null ? 43 : $Status.hashCode());
         return result;
     }
+
     @Override
     public String toString() {
         return "Tarefa{" +
@@ -185,10 +188,11 @@ public class Tarefa {
                 ", name='" + name + '\'' +
                 ", date=" + date +
                 ", status='" + status + '\'' +
-                ", tag='" + tag + '\'' +
+                ", tags=" + tags +
                 ", situacao=" + situacao +
                 ", resume='" + resume + '\'' +
                 ", difficult=" + difficult +
+                ", idUser=" + idUser +
                 '}';
     }
 }

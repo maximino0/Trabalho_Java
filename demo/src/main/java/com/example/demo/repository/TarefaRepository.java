@@ -10,17 +10,9 @@ import java.util.List;
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     Tarefa findByName(String name);
 
-    Tarefa findByTag(String tag);
 
     Tarefa findByDate(LocalDate date);
 
-    default Tarefa findByNameOrTag(Tarefa entrada) {
-        Tarefa tarefa = this.findByName(entrada.getName());
-        if (tarefa == null) {
-            tarefa = this.findByTag(entrada.getTag());
-        }
-        return tarefa;
-    }
 
     List<Tarefa> findByidUser(Long IdUser);
 
