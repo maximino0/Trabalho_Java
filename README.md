@@ -6,3 +6,6 @@ Vinicius Banõs SP3316484
 
 # Tema escolhido:
 Gerenciamento de Tarefas 
+
+# Link da entrega:
+https://youtu.be/oBg2VhHm0zg
