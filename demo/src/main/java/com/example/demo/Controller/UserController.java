@@ -44,12 +44,13 @@ public class UserController {
     }
 
     @PostMapping({"/cadastro"})
-    public String cadastroSubmit(@ModelAttribute @Valid User user, BindingResult result) {
+    public String cadastroSubmit(Model model,@ModelAttribute @Valid User user, BindingResult result) {
         //criação de uma lógica para verificar os dados que entram
         if(UserServices.Cadastrar(user) && !result.hasErrors()){
             UserServices.AdicionarCadastro(user);
             return this.pagesServices.Login();
         }
+        model.addAttribute("mensagemErro", "Credenciais inválidas.");
         return this.pagesServices.Cadastro();
     }
 

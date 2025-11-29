@@ -12,7 +12,9 @@
             <form th:action="@{/cadastro}" th:object="${user}" method="post" class="formulario-visivel">
                 <h2>Cadastro</h2>
                 <h1>Crie sua conta</h1>
-
+                <div th:if="${mensagemErro}" class="erro">
+                    <p th:text="${mensagemErro}"></p>
+                </div>
                 <input type="text" th:field="*{username}" placeholder="Usuário"   required  oninvalid="this.setCustomValidity('Por favor, insira apenas letras e espaços.')" oninput="this.setCustomValidity('')">
                 <input type="email" th:field="*{email}" placeholder="Email" required>
                 <input type="password" th:field="*{password}" placeholder="Senha"  required oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">

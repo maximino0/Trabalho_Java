@@ -40,19 +40,16 @@
 <!-- end header -->
 
 <!-- home -->
-
 <section class="home" id="home">
     <div class="swiper home-slider">
         <div class="swiper-wrapper">
-
             <div class="swiper-slide slide"
                  th:each="imagem : ${imagens}"
-                 th:style="'background: url(' + @{/images/{img}(img=${imagem})} + ') no-repeat;'">
+                 th:style="'background: url(' + @{/images/{img}(img=${imagem})} + ') no-repeat; background-size: cover;'">
                 <div class="content">
                     <h3>Onde as metas se tornam feitos</h3>
                 </div>
             </div>
-
         </div>
 
         <div class="swiper-button-next"></div>
@@ -85,7 +82,7 @@
             <div class="box">
                 <p>Data de entrega</p>
                 <input type="date" th:field="*{date}" class="input"
-                       required min=""
+                       required
                        oninvalid="this.setCustomValidity('Escolha uma data igual ou posterior a hoje.')"
                        oninput="this.setCustomValidity('')">
             </div>
@@ -101,6 +98,7 @@
                             th:value="${i}" th:text="${i}"></option>
                 </select>
             </div>
+
             <div class="box">
                 <p>Tags</p>
 
@@ -114,9 +112,6 @@
                     </div>
                 </div>
 
-                <!-- ADICIONAR NOVA TAG -->
-
-
                 <!-- LISTA VISUAL DE TAGS ADICIONADAS -->
                 <div id="tagsSelecionadas"></div>
             </div>
@@ -124,31 +119,28 @@
 
         <input type="submit" value="Adicionar tarefa" class="btn">
     </form>
+
     <form th:action="@{/tags/adicionar}" method="post" class="add-tag-box">
         <input type="text" name="nomeTag" id="nomeTag" placeholder="Adicionar nova tag" required>
         <button type="submit">+</button>
     </form>
     <div id="resultadotarefa"></div>
-
 </section>
 
 <!-- about -->
-
 <section class="about" id="about">
     <div class="row">
-
         <div class="content">
             <h3>tarefas para fazer</h3>
             <p>Aqui terá a lista de tarefas que você precisa fazer.</p>
         </div>
-
     </div>
 </section>
+
 <section class="filters">
     <p class="heading">Filtrar tarefas</p>
 
     <form th:action="@{/tarefas/filtro}" method="post" class="filter-form">
-
         <!-- Tipo de filtragem -->
         <div class="box">
             <p>Filtrar por:</p>
@@ -228,14 +220,20 @@
     // Garantir que ao carregar a página só o correto esteja ativo
     atualizarFiltro();
 </script>
-<!-- review -->
+
+<!-- review (pendentes) -->
 <section class="review" id="review">
-
-
     <div class="swiper review-slider">
-
         <div class="swiper-wrapper">
 
+            <!-- Se não houver tarefas pendentes -->
+            <div class="swiper-slide slide"
+                 th:if="${#lists.isEmpty(tarefas.?[situacao == true])}">
+                <h2 class="heading">Nenhuma tarefa</h2>
+                <p>Você não possui tarefas pendentes.</p>
+            </div>
+
+            <!-- Lista de tarefas pendentes -->
             <div class="swiper-slide slide"
                  th:each="tarefa : ${tarefas}"
                  th:if="${tarefa.situacao == true}">
@@ -264,29 +262,34 @@
 
         <div class="swiper-pagination"></div>
     </div>
-
 </section>
 
 <!-- review pendentes -->
 <section class="about" id="concluida">
     <div class="row">
-
         <div class="content">
             <h3>tarefas Concluídas</h3>
             <p>Aqui terá a lista de tarefas que você já terminou.</p>
         </div>
-
     </div>
 </section>
+
+<!-- concluídas -->
 <section class="review" id="concluidas">
     <div class="swiper review-slider">
-
         <div class="swiper-wrapper">
 
+            <!-- Se não houver tarefas concluídas -->
+            <div class="swiper-slide slide"
+                 th:if="${#lists.isEmpty(tarefas.?[situacao == false])}">
+                <h2 class="heading">Nenhuma tarefa concluída</h2>
+                <p>Você ainda não concluiu nenhuma tarefa.</p>
+            </div>
+
+            <!-- Lista de tarefas concluídas -->
             <div class="swiper-slide slide"
                  th:each="tarefa : ${tarefas}"
                  th:if="${tarefa.situacao == false}">
-
                 <h2 class="heading" th:text="${tarefa.name}"></h2>
                 <p th:text="${tarefa.resume}"></p>
 
@@ -309,12 +312,9 @@
     </div>
 </section>
 
-
 <!-- footer -->
 <section class="footer">
-
     <div class="box-container">
-
         <div class="box">
             <h3>contact info</h3>
             <a href="#"> <i class="fas fa-phone"></i> +123-456-789 </a>
@@ -336,14 +336,13 @@
         <a href="#" class="fab fa-twitter"></a>
         <a href="#" class="fab fa-pinterest"></a>
     </div>
-
 </section>
 
 <!-- scripts -->
 <script th:src="@{https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js}"></script>
 
 <script>
-    // BLOQUEAR DATAS PASSADAS
+    // BLOQUEAR DATAS PASSADAS (ajusta o min do input date)
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
 
@@ -353,7 +352,10 @@
 
     const dataMin = `${ano}-${mes}-${dia}`;
 
-    document.querySelector('input[type="date"]').setAttribute('min', dataMin);
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) {
+        dateInput.setAttribute('min', dataMin);
+    }
 
     // Swiper das tarefas
     const reviewSwiper = new Swiper('.review-slider', {
@@ -384,20 +386,22 @@
     // Carrega tema salvo
     const savedTheme = localStorage.getItem("theme") || "light";
     document.body.classList.add(savedTheme);
-    toggle.checked = savedTheme === "dark";
+    if (toggle) toggle.checked = savedTheme === "dark";
 
     // Quando o usuário troca o tema
-    toggle.addEventListener("change", () => {
-        if (toggle.checked) {
-            document.body.classList.remove("light");
-            document.body.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-        } else {
-            document.body.classList.remove("dark");
-            document.body.classList.add("light");
-            localStorage.setItem("theme", "light");
-        }
-    });
+    if (toggle) {
+        toggle.addEventListener("change", () => {
+            if (toggle.checked) {
+                document.body.classList.remove("light");
+                document.body.classList.add("dark");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.body.classList.remove("dark");
+                document.body.classList.add("light");
+                localStorage.setItem("theme", "light");
+            }
+        });
+    }
 </script>
 
 </body>
