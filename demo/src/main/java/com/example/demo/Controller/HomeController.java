@@ -62,7 +62,6 @@ public class HomeController {
         model.addAttribute("tarefa", new Tarefa());
         model.addAttribute("listaTagsProntas", lista_tags);
         List<Tarefa> tarefas = repository_t.findByidUser(user.getId());
-        System.out.println("pedrinho"+tarefas.getFirst());
         for(Tarefa tarefinha : tarefas){
             tarefasServices.Atraso(tarefinha);
         }
@@ -125,7 +124,6 @@ public class HomeController {
     public String filtrarTarefa(@RequestParam String filtragem, String valor) {
         filtro = filtragem;
         ordem = valor;
-        System.out.println("Pedrinho" + filtro +" "+ ordem);
         return "redirect:/home";
     }
 
@@ -137,5 +135,6 @@ public class HomeController {
         return "redirect:/home";
     }
 
-}
 
+
+}

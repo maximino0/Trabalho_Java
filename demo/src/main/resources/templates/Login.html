@@ -14,11 +14,15 @@
             <form th:action="@{/}" method="post" class="formulario-visivel">
                 <h2>Login</h2>
                 <h1>Bem-vindo!</h1>
+                <div th:if="${mensagemErro}" class="erro">
+                    <p th:text="${mensagemErro}"></p>
+                </div>
                 <input type="text"  name="username" placeholder="Usuário" required  oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">
                 <input type="password"  name="password" placeholder="Senha" required oninvalid="this.setCustomValidity('Por favor, insira apenas caracteres válidos.')" oninput="this.setCustomValidity('')">
                 <div class="login-button">
                     <button type="submit">Entrar</button>
                 </div>
+
             </form>
 
             <p>Não tem conta?</p>
